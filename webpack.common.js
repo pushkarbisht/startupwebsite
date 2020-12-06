@@ -2,7 +2,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-
+let htmlPageNames = ['index', 'index2'];
+let multipleHtmlPlugins = htmlPageNames.map(name => {
+  return new HtmlWebpackPlugin({
+    template: `./src/${name}.html`, // relative path to the HTML files
+    filename: `${name}.html`, // output HTML files
+    chunks: [`${name}`] // respective JS files
+  })
+});
 module.exports = {
   entry: {
     index : './src/index.js',
@@ -50,6 +57,6 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
-      filename: "./index.html"
-  })]
+      chunks: ['main']
+  })].concat(multipleHtmlPlugins)
 };
